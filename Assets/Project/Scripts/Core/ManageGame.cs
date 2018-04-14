@@ -22,7 +22,7 @@ public class ManageGame : MonoBehaviour {
 
     public void GameOver()
     {
-        GameObject.Find("UI Root").SetActive(false);
+        GameObject.Find("UIRoot").SetActive(false);
         GameOverUI.SetActive(true);
 
         GameController _gameController = GameObject.Find("InGameUI").GetComponent<GameController>();
