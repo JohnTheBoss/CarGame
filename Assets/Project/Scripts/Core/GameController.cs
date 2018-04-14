@@ -5,9 +5,15 @@ public class GameController : MonoBehaviour {
     private EnemyCarSpawner _enemyCarSpawner;
     private RoadSpawner _roadSpawner;
     private SideTileSpawner _sideTileSpawner;
+    private GameObject dd;
 
     public UIScore ScoreText;
     public UIScore BestScoreText;
+
+    private void Start()
+    {
+        BestScoreText.Score = PlayerPrefs.GetInt("HighScore", 0);
+    }
 
     private void Awake()
     {
@@ -28,6 +34,11 @@ public class GameController : MonoBehaviour {
         _enemyCarSpawner.ResetEnemyCars();
         _roadSpawner.ResetRoad();
         _sideTileSpawner.ResetSideSegments();
+    }
+
+    public void UpdateBestScore(int NewBestScore)
+    {
+        BestScoreText.Score = NewBestScore;
     }
 
     private void Update()

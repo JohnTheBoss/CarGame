@@ -5,29 +5,49 @@ using UnityEngine.SceneManagement;
 public class ManageGame : MonoBehaviour {
 
     public GameObject GameOverUI;
-    private GameController _gameController;
 
     public Text ScoreText;
     public Text BestScoreText;
 
     private CarMove _carMove;
+    private int _score;
+    private int _bestScore;
 
     private void Awake()
     {
+        _bestScore = PlayerPrefs.GetInt("HighScore", 0);
         _carMove = FindObjectOfType<CarMove>();
     }
 
 
     public void GameOver()
-    {   
+    {
+        GameObject.Find("UI Root").SetActive(false);
         GameOverUI.SetActive(true);
+
+        GameController _gameController = GameObject.Find("InGameUI").GetComponent<GameController>();
+        _score = _gameController.ScoreText.Score;
+        _bestScore = _gameController.BestScoreText.Score;
+
+        ScoreText.text = "Score: " + _score.ToString();
+        
+        if (_bestScore < _score)
+        {
+            _bestScore = _score;
+            PlayerPrefs.SetInt("HighScore", _bestScore);
+        }
+
+        BestScoreText.text = "Best: " + _bestScore;
+
+        
+
         FindObjectOfType<EnemyCarSpawner>().StopSpawn();
         StopAllEnemyCars();
         _carMove.StopCarMove();
+
         Debug.Log("GAME OVER");
     }
 
-    // nekem ez nem biztos hogy kell, mert van egy gamecontroller ami újraindít, bár akkor "bugol" a kamera
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
